@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfuiye5lg4c4y"]
+[gd_scene load_steps=5 format=3 uid="uid://cfuiye5lg4c4y"]
 
+[ext_resource type="Script" path="res://scripts/player.cs" id="1_bj7v0"]
 [ext_resource type="Texture2D" uid="uid://cjfhfdjewymiq" path="res://sprites/A-EYE/A-EYE-idle.png" id="1_srohb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_th65g"]
@@ -17,6 +18,7 @@ animations = [{
 radius = 63.0079
 
 [node name="Player" type="Area2D"]
+script = ExtResource("1_bj7v0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
