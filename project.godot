@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="A-EYE"
-config/features=PackedStringArray("4.0", "Mobile")
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.0", "C#", "Mobile")
 config/icon="res://icon.svg"
 
 [display]
@@ -25,6 +26,10 @@ window/stretch/aspect="expand"
 [dotnet]
 
 project/assembly_name="A-EYE"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 

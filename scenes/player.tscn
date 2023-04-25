@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfuiye5lg4c4y"]
+
+[ext_resource type="Texture2D" uid="uid://cjfhfdjewymiq" path="res://sprites/A-EYE/A-EYE-idle.png" id="1_srohb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_th65g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_srohb")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jvy4n"]
+radius = 63.0079
+
+[node name="Player" type="Area2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_th65g")
+animation = &"idle"
+frame_progress = 0.287495
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jvy4n")
