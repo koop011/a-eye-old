@@ -4,10 +4,10 @@ using System;
 public partial class player : Area2D
 {
 	public int speed = 250;
-	public Vector2 screen_size;
-	public Joystick joystick;
+	private Vector2 screen_size;
+	private Joystick joystick;
 	private int screen_border_adjuster = 50;
-	public Vector2 start_position;
+	private Vector2 start_position;
 	private AnimatedSprite2D animatedSprite2D;
 	private Vector2 velocity = Vector2.Zero;
 

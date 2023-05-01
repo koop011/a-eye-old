@@ -26,22 +26,20 @@ public partial class Joystick : Area2D
 	{
 		if (touched)
 		{
-			float joystick_radius = joystick_area_radius;
-			Vector2 center_position = joystick_pad_center;
-			float distance = joystick.GetGlobalMousePosition().DistanceTo(center_position);
-			Vector2 from_origin_to_object = joystick.GetGlobalMousePosition() - center_position;
-			from_origin_to_object *= joystick_radius / distance;
+			float distance = joystick.GetGlobalMousePosition().DistanceTo(joystick_pad_center);
+			Vector2 from_origin_to_object = joystick.GetGlobalMousePosition() - joystick_pad_center;
+			from_origin_to_object *= joystick_area_radius / distance;
 			try
 			{
-				joystick_radius_limit = joystick_radius_limit.Clamp(new Vector2(0, 0), center_position + from_origin_to_object);
+				joystick_radius_limit = joystick_radius_limit.Clamp(Vector2.Zero, joystick_pad_center + from_origin_to_object);
 			}
 			// Ignore joystick math clamp exception, when the user drags the joystick outside of the gameplay scene.
 			catch
 			{ }
 
-			if (distance > joystick_radius)
+			if (distance > joystick_area_radius)
 			{
-				joystick.GlobalPosition = center_position + from_origin_to_object;
+				joystick.GlobalPosition = joystick_pad_center + from_origin_to_object;
 			}
 			else
 			{
