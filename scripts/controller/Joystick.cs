@@ -67,9 +67,9 @@ public partial class Joystick : Area2D
 			}
 		}
 
-		if (@event is InputEventScreenTouch touched_event)
+		if (@event is InputEventScreenTouch touch_event)
 		{
-			move_vector = calculate_move_vector(touched_event.Position);
+			move_vector = calculate_move_vector(touch_event.Position);
 
 		}
 		else if (@event is InputEventScreenDrag drag_event)
