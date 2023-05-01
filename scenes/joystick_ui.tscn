@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bejkn8o1j8nv7"]
+[gd_scene load_steps=5 format=3 uid="uid://bejkn8o1j8nv7"]
 
 [ext_resource type="Script" path="res://scripts/controller/Joystick.cs" id="1_ogpxb"]
-[ext_resource type="Script" path="res://scenes/Joystick_ui.cs" id="1_wi8y3"]
 [ext_resource type="Texture2D" uid="uid://dpd3weoxu4ecb" path="res://sprites/controller/Joystick.png" id="2_ypvve"]
 [ext_resource type="Texture2D" uid="uid://d4hua22ljnojw" path="res://sprites/controller/LargeHandleFilledGrey.png" id="3_qnl0k"]
 
@@ -9,7 +8,6 @@
 radius = 105.005
 
 [node name="Joystick-UI" type="CanvasLayer"]
-script = ExtResource("1_wi8y3")
 
 [node name="Joystick" type="Area2D" parent="."]
 script = ExtResource("1_ogpxb")

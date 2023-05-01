@@ -5,13 +5,14 @@ public partial class Joystick : Area2D
 {
 	[Signal]
 	public delegate Vector2 UseMoveVectorEventHandler();
+	
 	private Node2D joystick_pad;
 	private Node2D joystick;
 	private float joystick_area_radius;
 	private Vector2 joystick_pad_center;
-
-	public Vector2 move_vector;
-	private bool touched = false;
+	private Vector2 move_vector;
+	private Vector2 joystick_radius_limit;
+	public bool touched = false;
 
 	public override void _Ready()
 	{
@@ -25,19 +26,26 @@ public partial class Joystick : Area2D
 	{
 		if (touched)
 		{
-			float radius = joystick_area_radius; //radius of *black circle*
-			Vector2 center_position = joystick_pad_center; //center of *black circle*
-			float distance = joystick.GetGlobalMousePosition().DistanceTo(center_position); //distance from ~green object~ to *black circle*
-
-			if (distance > radius) //If the distance is less than the radius, it is already within the circle.
+			float joystick_radius = joystick_area_radius;
+			Vector2 center_position = joystick_pad_center;
+			float distance = joystick.GetGlobalMousePosition().DistanceTo(center_position);
+			Vector2 from_origin_to_object = joystick.GetGlobalMousePosition() - center_position;
+			from_origin_to_object *= joystick_radius / distance;
+			try
 			{
-				Vector2 from_origin_to_object = joystick.GetGlobalMousePosition() - center_position; //~GreenPosition~ - *BlackCenter*
-				from_origin_to_object *= radius / distance; //Multiply by radius //Divide by Distance
-				joystick.GlobalPosition = center_position + from_origin_to_object; //*BlackCenter* + all that Math
+				joystick_radius_limit = joystick_radius_limit.Clamp(new Vector2(0, 0), center_position + from_origin_to_object);
+			}
+			// Ignore joystick math clamp exception, when the user drags the joystick outside of the gameplay scene.
+			catch
+			{ }
+
+			if (distance > joystick_radius)
+			{
+				joystick.GlobalPosition = center_position + from_origin_to_object;
 			}
 			else
 			{
-				joystick.GlobalPosition = GetGlobalMousePosition();
+				joystick.GlobalPosition = joystick.GetGlobalMousePosition();
 			}
 		}
 	}
@@ -51,7 +59,7 @@ public partial class Joystick : Area2D
 				touched = true;
 				joystick_pad.GlobalPosition = GetGlobalMousePosition();
 				joystick_pad_center = joystick_pad.GlobalPosition;
-				
+
 				Show();
 			}
 			else
@@ -61,19 +69,21 @@ public partial class Joystick : Area2D
 			}
 		}
 
-		if (@event is InputEventScreenDrag dragged){
-			move_vector = calculate_move_vector(dragged.Position);
-			EmitSignal("UseMoveVectorEventHandler", move_vector);
+		if (@event is InputEventScreenTouch touched_event)
+		{
+			move_vector = calculate_move_vector(touched_event.Position);
+
+		}
+		else if (@event is InputEventScreenDrag drag_event)
+		{
+
+			move_vector = calculate_move_vector(drag_event.Position);
+			EmitSignal(SignalName.UseMoveVector, calculate_move_vector(drag_event.Position));
 		}
 	}
 
-	public Vector2 calculate_move_vector(Vector2 event_position) {
-		var texture_center = new Vector2(150,150);
-		//joystick_velocity.X = joystick.GlobalPosition.X / joystick_area_radius;
-		//joystick_velocity.Y = joystick.GlobalPosition.Y / joystick_area_radius;
-		
-		return (event_position - texture_center).Normalized();
+	public Vector2 calculate_move_vector(Vector2 event_position)
+	{
+		return (event_position - joystick_pad_center).Normalized();
 	}
 }
-
-
