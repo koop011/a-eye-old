@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://do6ujo523n0yb"]
+[gd_scene load_steps=4 format=3 uid="uid://5qqhypthcaxj"]
 
-[ext_resource type="PackedScene" uid="uid://bejkn8o1j8nv7" path="res://scenes/joystick_ui.tscn" id="1_02n22"]
+[ext_resource type="Script" path="res://scripts/main.cs" id="1_gjdsp"]
 [ext_resource type="PackedScene" uid="uid://cfuiye5lg4c4y" path="res://scenes/player.tscn" id="2_eqpqo"]
+[ext_resource type="PackedScene" uid="uid://bejkn8o1j8nv7" path="res://scenes/joystick_ui.tscn" id="3_bhdpm"]
 
 [node name="Main" type="Node"]
-
-[node name="Joystick-UI" parent="." instance=ExtResource("1_02n22")]
+script = ExtResource("1_gjdsp")
 
 [node name="Player" parent="." instance=ExtResource("2_eqpqo")]
+
+[node name="Start-Position" type="Marker2D" parent="."]
+position = Vector2(360, 540)
+
+[node name="Joystick-UI" parent="." instance=ExtResource("3_bhdpm")]
