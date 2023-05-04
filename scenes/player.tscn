@@ -33,13 +33,13 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jvy4n"]
-radius = 127.5
+radius = 50.0
 
 [node name="Player" type="Area2D"]
-scale = Vector2(0.4, 0.4)
 script = ExtResource("1_bj7v0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_th65g")
 animation = &"idle"
 

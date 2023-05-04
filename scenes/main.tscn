@@ -1,15 +1,40 @@
-[gd_scene load_steps=4 format=3 uid="uid://5qqhypthcaxj"]
+[gd_scene load_steps=5 format=3 uid="uid://5qqhypthcaxj"]
 
 [ext_resource type="Script" path="res://scripts/main.cs" id="1_gjdsp"]
 [ext_resource type="PackedScene" uid="uid://cfuiye5lg4c4y" path="res://scenes/player.tscn" id="2_eqpqo"]
 [ext_resource type="PackedScene" uid="uid://bejkn8o1j8nv7" path="res://scenes/joystick_ui.tscn" id="3_bhdpm"]
+[ext_resource type="Script" path="res://scenes/Enemy_Manager.cs" id="4_f815b"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_gjdsp")
 
 [node name="Player" parent="." instance=ExtResource("2_eqpqo")]
 
+[node name="Spawn1" type="Marker2D" parent="Player"]
+position = Vector2(-640, -640)
+
+[node name="Spawn2" type="Marker2D" parent="Player"]
+position = Vector2(1344, -640)
+
+[node name="Spawn3" type="Marker2D" parent="Player"]
+position = Vector2(-640, 1728)
+
+[node name="Spawn4" type="Marker2D" parent="Player"]
+position = Vector2(1344, 1728)
+
 [node name="Start-Position" type="Marker2D" parent="."]
 position = Vector2(360, 540)
 
 [node name="Joystick-UI" parent="." instance=ExtResource("3_bhdpm")]
+
+[node name="Round-Timer" type="Timer" parent="."]
+wait_time = 60.0
+
+[node name="Start-Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Enemy-Manager" type="Node" parent="."]
+script = ExtResource("4_f815b")
+
+[connection signal="timeout" from="Start-Timer" to="Enemy-Manager" method="_on_start_timer_timeout"]
