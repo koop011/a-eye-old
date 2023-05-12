@@ -3,19 +3,36 @@ using System;
 
 public partial class Enemy_Manager : Node
 {
-	private Marker2D spawn1;
-	private Marker2D spawn2;
-	private Marker2D spawn3;
-	private Marker2D spawn4;
+	[Export]
+	public PackedScene a_bot_scene {get; set;}
+	private System.Collections.Generic.List<Marker2D> spawns = new System.Collections.Generic.List<Marker2D>();
+	private int spawn_count = 5;
+	
+	private Node2D player;
 	public override void _Ready()
 	{
-		spawn1 = GetNode<Marker2D>("Player/Spawn1");
-		spawn2 = GetNode<Marker2D>("Player/Spawn2");
-		spawn3 = GetNode<Marker2D>("Player/Spawn3");
-		spawn4 = GetNode<Marker2D>("Player/Spawn4");
+		player = GetNode<player>("../Player");
+		for(int i = 1; i <= spawn_count; i++){
+			spawns.Add(player.GetNode<Marker2D>(string.Format("Spawn{0}",i)));
+		}		
 	}
 	private void _on_start_timer_timeout()
 	{
-		
+		GetTree().CallGroup("A-BOTs", Node.MethodName.QueueFree);
+		a_bot_spawn();
+	}
+
+	private void a_bot_spawn(){
+		for(int i = 0; i < spawn_count; i++){
+			a_bot a_bot = a_bot_scene.Instantiate<a_bot>();
+			a_bot.Position = spawns[i].Position;
+			AddChild(a_bot);
+		}	
+			// a_bot a_bot = a_bot_scene.Instantiate<a_bot>();
+			// a_bot.Position = spawns[0].Position;
+			// AddChild(a_bot);
+			// a_bot a_bots = a_bot_scene.Instantiate<a_bot>();
+			// a_bots.Position = spawns[3].Position;
+			// AddChild(a_bots);	
 	}
 }

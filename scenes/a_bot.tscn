@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bexigum7of1s5"]
+[gd_scene load_steps=6 format=3 uid="uid://bexigum7of1s5"]
 
 [ext_resource type="Texture2D" uid="uid://enoisntc0f7v" path="res://sprites/A-BOT/A-BOT-idle.png" id="1_3mwdo"]
-[ext_resource type="Script" path="res://scenes/a_bot.cs" id="1_11a15"]
+[ext_resource type="Script" path="res://scripts/a_bot.cs" id="1_dr0bu"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ln2ra"]
 animations = [{
@@ -17,8 +17,14 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_vgbbq"]
 radius = 51.0
 
-[node name="A-BOT" type="RigidBody2D" groups=["enemy-easy"]]
-script = ExtResource("1_11a15")
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ojmv3"]
+vertices = PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)])
+
+[node name="A-BOT" type="RigidBody2D" groups=["A-BOTs"]]
+gravity_scale = 0.0
+script = ExtResource("1_dr0bu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.4, 0.4)
@@ -29,3 +35,12 @@ animation = &"idle"
 shape = SubResource("CircleShape2D_vgbbq")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 80.0
+target_desired_distance = 80.0
+debug_enabled = true
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(384, 176)
+navigation_polygon = SubResource("NavigationPolygon_ojmv3")
+
+[connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]

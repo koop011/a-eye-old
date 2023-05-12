@@ -1,12 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://5qqhypthcaxj"]
+[gd_scene load_steps=7 format=3 uid="uid://5qqhypthcaxj"]
 
 [ext_resource type="Script" path="res://scripts/main.cs" id="1_gjdsp"]
 [ext_resource type="PackedScene" uid="uid://cfuiye5lg4c4y" path="res://scenes/player.tscn" id="2_eqpqo"]
 [ext_resource type="PackedScene" uid="uid://bejkn8o1j8nv7" path="res://scenes/joystick_ui.tscn" id="3_bhdpm"]
-[ext_resource type="Script" path="res://scenes/Enemy_Manager.cs" id="4_f815b"]
+[ext_resource type="Script" path="res://scripts/Enemy_Manager.cs" id="4_80geu"]
+[ext_resource type="PackedScene" uid="uid://bhyscligrdhb1" path="res://scenes/background.tscn" id="5_elysr"]
+[ext_resource type="PackedScene" uid="uid://bexigum7of1s5" path="res://scenes/a_bot.tscn" id="6_qafjq"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_gjdsp")
+
+[node name="Background" parent="." instance=ExtResource("5_elysr")]
 
 [node name="Player" parent="." instance=ExtResource("2_eqpqo")]
 
@@ -22,6 +26,12 @@ position = Vector2(-640, 1728)
 [node name="Spawn4" type="Marker2D" parent="Player"]
 position = Vector2(1344, 1728)
 
+[node name="Spawn5" type="Marker2D" parent="Player"]
+position = Vector2(512, 536)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../Camera2D")
+
 [node name="Start-Position" type="Marker2D" parent="."]
 position = Vector2(360, 540)
 
@@ -35,6 +45,13 @@ wait_time = 5.0
 one_shot = true
 
 [node name="Enemy-Manager" type="Node" parent="."]
-script = ExtResource("4_f815b")
+script = ExtResource("4_80geu")
+a_bot_scene = ExtResource("6_qafjq")
+
+[node name="Target-Finder" type="Timer" parent="Enemy-Manager"]
+wait_time = 0.1
+autostart = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [connection signal="timeout" from="Start-Timer" to="Enemy-Manager" method="_on_start_timer_timeout"]

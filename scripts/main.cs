@@ -8,5 +8,6 @@ public partial class main : Node
 		var player = GetNode<player>("Player");
 		var start_position = GetNode<Marker2D>("Start-Position");
 		player.start_new_game(start_position.Position);
+		GetNode<Timer>("Start-Timer").Start();
 	}
 }

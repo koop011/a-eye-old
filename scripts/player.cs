@@ -31,10 +31,11 @@ public partial class player : Area2D
 		}
 
 		Position += velocity * (float)delta;
-		Position = new Vector2(
-			x: Mathf.Clamp(Position.X, screen_border_adjuster, screen_size.X - screen_border_adjuster),
-			y: Mathf.Clamp(Position.Y, screen_border_adjuster, screen_size.Y - screen_border_adjuster)
-		);
+		// Move limited to screen size.
+		// Position = new Vector2(
+		// 	x: Mathf.Clamp(Position.X, screen_border_adjuster, screen_size.X - screen_border_adjuster),
+		// 	y: Mathf.Clamp(Position.Y, screen_border_adjuster, screen_size.Y - screen_border_adjuster)
+		// );
 	}
 
 	public void start_new_game(Vector2 position)
@@ -46,9 +47,8 @@ public partial class player : Area2D
 
 	private void _on_joystick_use_move_vector(Vector2 move_vector)
 	{
-		velocity.X = move_vector.X * speed;
-		velocity.Y = move_vector.Y * speed;
-
+		velocity = move_vector * (float)speed;
+		
 		if (move_vector.X > 0.9 || move_vector.X < -0.9)
 		{
 			animatedSprite2D.Animation = "idle";
