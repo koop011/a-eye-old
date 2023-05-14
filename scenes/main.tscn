@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://5qqhypthcaxj"]
+[gd_scene load_steps=8 format=3 uid="uid://5qqhypthcaxj"]
 
 [ext_resource type="Script" path="res://scripts/main.cs" id="1_gjdsp"]
 [ext_resource type="PackedScene" uid="uid://cfuiye5lg4c4y" path="res://scenes/player.tscn" id="2_eqpqo"]
@@ -7,6 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://bhyscligrdhb1" path="res://scenes/background.tscn" id="5_elysr"]
 [ext_resource type="PackedScene" uid="uid://bexigum7of1s5" path="res://scenes/a_bot.tscn" id="6_qafjq"]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_46v5g"]
+vertices = PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)])
+
 [node name="Main" type="Node"]
 script = ExtResource("1_gjdsp")
 
@@ -14,20 +19,17 @@ script = ExtResource("1_gjdsp")
 
 [node name="Player" parent="." instance=ExtResource("2_eqpqo")]
 
-[node name="Spawn1" type="Marker2D" parent="Player"]
+[node name="Spawn0" type="Marker2D" parent="Player"]
 position = Vector2(-640, -640)
 
-[node name="Spawn2" type="Marker2D" parent="Player"]
+[node name="Spawn1" type="Marker2D" parent="Player"]
 position = Vector2(1344, -640)
 
-[node name="Spawn3" type="Marker2D" parent="Player"]
+[node name="Spawn2" type="Marker2D" parent="Player"]
 position = Vector2(-640, 1728)
 
-[node name="Spawn4" type="Marker2D" parent="Player"]
+[node name="Spawn3" type="Marker2D" parent="Player"]
 position = Vector2(1344, 1728)
-
-[node name="Spawn5" type="Marker2D" parent="Player"]
-position = Vector2(512, 536)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
 remote_path = NodePath("../../Camera2D")
@@ -53,5 +55,9 @@ wait_time = 0.1
 autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(384, 176)
+navigation_polygon = SubResource("NavigationPolygon_46v5g")
 
 [connection signal="timeout" from="Start-Timer" to="Enemy-Manager" method="_on_start_timer_timeout"]

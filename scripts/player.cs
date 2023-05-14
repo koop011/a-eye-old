@@ -8,7 +8,7 @@ public partial class player : Area2D
 	private Joystick joystick;
 	private int screen_border_adjuster = 50;
 	private Vector2 start_position;
-	private AnimatedSprite2D animatedSprite2D;
+	private AnimatedSprite2D animated_sprite_2D;
 	private Vector2 velocity = Vector2.Zero;
 
 	public override void _Ready()
@@ -17,7 +17,7 @@ public partial class player : Area2D
 		screen_size = GetViewportRect().Size;
 		joystick = GetNode<Joystick>("../Joystick-UI/Joystick");
 		start_position = GetNode<Marker2D>("../Start-Position").Position;
-		animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		animated_sprite_2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		joystick.Connect("UseMoveVector", new Callable(this, nameof(_on_joystick_use_move_vector)));
 	}
@@ -26,7 +26,7 @@ public partial class player : Area2D
 	{
 		if (!joystick.touched)
 		{
-			animatedSprite2D.Animation = "idle";
+			animated_sprite_2D.Animation = "idle";
 			velocity = Vector2.Zero;
 		}
 
@@ -51,17 +51,17 @@ public partial class player : Area2D
 		
 		if (move_vector.X > 0.9 || move_vector.X < -0.9)
 		{
-			animatedSprite2D.Animation = "idle";
+			animated_sprite_2D.Animation = "idle";
 		}
 		else if (move_vector.Y < -0.3)
 		{
-			animatedSprite2D.Animation = "up";
+			animated_sprite_2D.Animation = "up";
 		}
 		else if (move_vector.Y > 0.3)
 		{
-			animatedSprite2D.Animation = "down";
+			animated_sprite_2D.Animation = "down";
 		}
 
-		animatedSprite2D.FlipH = move_vector.X < 0;
+		animated_sprite_2D.FlipH = move_vector.X < 0;
 	}
 }

@@ -5,11 +5,15 @@ public partial class a_bot : RigidBody2D
 {
 	private NavigationAgent2D nav_agent;
 	private Timer target_find_timer;
-	private int nav_agent_speed = 300;
-	private Vector2 a_bot_velocity;
+	private int speed = 300;
+	private Vector2 velocity;
+	private Vector2 next_location;
+	private Vector2 direction;
 	private player player;
 	private float movement_delta;
 	private int counter;
+	private AnimatedSprite2D animated_sprite_2D;
+
 	public override void _Ready()
 	{
 		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -18,29 +22,39 @@ public partial class a_bot : RigidBody2D
 		nav_agent = GetNode<NavigationAgent2D>("NavigationAgent2D");
 		target_find_timer = GetNode<Timer>("../Target-Finder");
 		target_find_timer.Connect("timeout", new Callable(this, nameof(_on_target_finder_timeout)));
+		animated_sprite_2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		nav_agent.PathDesiredDistance = 1;
 		nav_agent.TargetDesiredDistance = 1;		
 		nav_agent.AvoidanceEnabled = true;
-		
-	}
-
-	public override void _Process(double delta){
-		// GD.Print(nav_agent.IsTargetReachable());
-		// GD.Print(a_bot_velocity);
+		LockRotation = true;		
 	}
 
 	public override void _IntegrateForces(PhysicsDirectBodyState2D state){
-		//if(nav_agent.IsTargetReachable()){
-			
-			var next_location = nav_agent.GetNextPathPosition();
-			a_bot_velocity = Position.DirectionTo(next_location).Normalized() * nav_agent_speed;
-			GD.Print(a_bot_velocity);
-			nav_agent.SetVelocity(a_bot_velocity);
-			
-		//}
-		//else{
+		
+		if(nav_agent.IsTargetReachable()){			
+			next_location = nav_agent.GetNextPathPosition();
+			direction = Position.DirectionTo(next_location).Normalized();
+			velocity = direction * speed;			
+			nav_agent.SetVelocity(velocity);			
+		}
+		else{
 			LinearVelocity = Vector2.Zero;
-		//}
+		}
+		
+		if (direction.X > 0.9 || direction.X < -0.9)
+		{
+			animated_sprite_2D.Animation = "idle";
+		}
+		else if (direction.Y < -0.3)
+		{
+			animated_sprite_2D.Animation = "up";
+		}
+		else if (direction.Y > 0.3)
+		{
+			animated_sprite_2D.Animation = "down";
+		}
+
+		animated_sprite_2D.FlipH = direction.X < 0;
 	}
 
 	private void _on_navigation_agent_2d_velocity_computed(Vector2 safe_velocity)
@@ -50,8 +64,6 @@ public partial class a_bot : RigidBody2D
 
 	private void _on_target_finder_timeout()
 	{
-		counter += 1;
-		GD.Print(counter);
 		nav_agent.TargetPosition = player.GlobalPosition;
 	}
 }

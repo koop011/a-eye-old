@@ -1,10 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://bexigum7of1s5"]
+[gd_scene load_steps=7 format=3 uid="uid://bexigum7of1s5"]
 
 [ext_resource type="Texture2D" uid="uid://enoisntc0f7v" path="res://sprites/A-BOT/A-BOT-idle.png" id="1_3mwdo"]
 [ext_resource type="Script" path="res://scripts/a_bot.cs" id="1_dr0bu"]
+[ext_resource type="Texture2D" uid="uid://daccigte8121" path="res://sprites/A-BOT/A-EYE-down.png" id="2_f7s2l"]
+[ext_resource type="Texture2D" uid="uid://bq1e88585dl4j" path="res://sprites/A-BOT/A-BOT-up.png" id="4_aufwi"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ln2ra"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_f7s2l")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_3mwdo")
@@ -12,15 +22,18 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_aufwi")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vgbbq"]
 radius = 51.0
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_ojmv3"]
-vertices = PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)])
 
 [node name="A-BOT" type="RigidBody2D" groups=["A-BOTs"]]
 gravity_scale = 0.0
@@ -29,7 +42,7 @@ script = ExtResource("1_dr0bu")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_ln2ra")
-animation = &"idle"
+animation = &"up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vgbbq")
@@ -37,10 +50,7 @@ shape = SubResource("CircleShape2D_vgbbq")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 80.0
 target_desired_distance = 80.0
+avoidance_enabled = true
 debug_enabled = true
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-position = Vector2(384, 176)
-navigation_polygon = SubResource("NavigationPolygon_ojmv3")
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]
