@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cfuiye5lg4c4y"]
+[gd_scene load_steps=8 format=3 uid="uid://cfuiye5lg4c4y"]
 
 [ext_resource type="Script" path="res://scripts/player.cs" id="1_bj7v0"]
 [ext_resource type="Texture2D" uid="uid://cjfhfdjewymiq" path="res://sprites/A-EYE/A-EYE-idle.png" id="1_srohb"]
@@ -35,7 +35,11 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_jvy4n"]
 radius = 50.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_17wty"]
+radius = 1000.0
+
 [node name="Player" type="Area2D"]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_bj7v0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -45,3 +49,7 @@ animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_jvy4n")
+
+[node name="Attack-Range" type="CollisionShape2D" parent="."]
+scale = Vector2(0.4, 0.4)
+shape = SubResource("CircleShape2D_17wty")

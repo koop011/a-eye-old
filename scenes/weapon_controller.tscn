@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://5rfadvmy7fxw"]
+
+[ext_resource type="Script" path="res://scripts/weapon-controller/Weapon_Controller.cs" id="1_2afwu"]
+[ext_resource type="PackedScene" uid="uid://c53lfhluvdige" path="res://scenes/WeaponController/Weapons/ElectricBasic.tscn" id="2_vdbgh"]
+
+[node name="Weapon-Controller" type="Node2D"]
+script = ExtResource("1_2afwu")
+ElectricBasicScene = ExtResource("2_vdbgh")
+
+[node name="Weapon-Console" type="AnimatedSprite2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="OnTimerTimeout"]

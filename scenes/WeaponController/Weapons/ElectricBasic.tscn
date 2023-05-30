@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://c53lfhluvdige"]
+
+[ext_resource type="Script" path="res://scripts/weapon-controller/Weapons/ElectricBasic.cs" id="1_ehaqr"]
+[ext_resource type="Texture2D" uid="uid://drtdc48xuqh26" path="res://sprites/Effects/Electric/Electric_strike4.png" id="2_4exkk"]
+[ext_resource type="Texture2D" uid="uid://ci8dsntc3hslv" path="res://sprites/Effects/Electric/Electric_base.png" id="3_fd641"]
+[ext_resource type="Texture2D" uid="uid://cwh6blkoxdhld" path="res://sprites/Effects/Electric/Electric_strike2.png" id="4_spwse"]
+[ext_resource type="Texture2D" uid="uid://bgwr0l2oeanfc" path="res://sprites/Effects/Electric/Electric_strike1.png" id="5_4yv8y"]
+[ext_resource type="Texture2D" uid="uid://d3ggf2knlw8al" path="res://sprites/Effects/Electric/Electric_strike3.png" id="6_y2ukp"]
+
+[sub_resource type="Animation" id="Animation_oqjjw"]
+resource_name = "attack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_fd641"), ExtResource("4_spwse"), ExtResource("5_4yv8y"), ExtResource("6_y2ukp"), ExtResource("2_4exkk")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_66xl3"]
+_data = {
+"attack": SubResource("Animation_oqjjw")
+}
+
+[node name="ElectricBasic" type="Node2D"]
+script = ExtResource("1_ehaqr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_fd641")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_66xl3")
+}
+
+[node name="Timer" type="Timer" parent="."]
+metadata/Disabled = true
+
+[connection signal="timeout" from="Timer" to="." method="OnTimerTimeout"]
