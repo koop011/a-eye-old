@@ -27,7 +27,7 @@ public partial class player : Area2D
         weaponController = GetNode<Weapon_Controller>("../Weapon-Controller");
         _enemies = new List<Node2D>();
 
-        joystick.Connect("UseMoveVector", new Callable(this, nameof(OnJoystickUseMoveVector)));
+        joystick.Connect("UseMoveVector", new Callable(this, nameof(_on_joystick_use_move_vector)));
     }
 
     public override void _Process(double delta)
@@ -60,7 +60,7 @@ public partial class player : Area2D
         GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
     }
 
-    private void OnJoystickUseMoveVector(Vector2 move_vector)
+    private void _on_joystick_use_move_vector(Vector2 move_vector)
     {
         velocity = move_vector * (float)speed;
 
