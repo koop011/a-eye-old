@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c53lfhluvdige"]
+[gd_scene load_steps=12 format=3 uid="uid://c53lfhluvdige"]
 
 [ext_resource type="Script" path="res://scripts/weapon-controller/Weapons/ElectricBasic.cs" id="1_ehaqr"]
 [ext_resource type="Texture2D" uid="uid://drtdc48xuqh26" path="res://sprites/Effects/Electric/Electric_strike4.png" id="2_4exkk"]
@@ -6,6 +6,24 @@
 [ext_resource type="Texture2D" uid="uid://cwh6blkoxdhld" path="res://sprites/Effects/Electric/Electric_strike2.png" id="4_spwse"]
 [ext_resource type="Texture2D" uid="uid://bgwr0l2oeanfc" path="res://sprites/Effects/Electric/Electric_strike1.png" id="5_4yv8y"]
 [ext_resource type="Texture2D" uid="uid://d3ggf2knlw8al" path="res://sprites/Effects/Electric/Electric_strike3.png" id="6_y2ukp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mbi7f"]
+size = Vector2(20, 232)
+
+[sub_resource type="Animation" id="Animation_je022"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/DamageArea/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_oqjjw"]
 resource_name = "attack"
@@ -22,17 +40,43 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("3_fd641"), ExtResource("4_spwse"), ExtResource("5_4yv8y"), ExtResource("6_y2ukp"), ExtResource("2_4exkk")]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/DamageArea/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_2jw12"]
+resource_name = "new_animation"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_66xl3"]
 _data = {
-"attack": SubResource("Animation_oqjjw")
+"RESET": SubResource("Animation_je022"),
+"attack": SubResource("Animation_oqjjw"),
+"new_animation": SubResource("Animation_2jw12")
 }
 
 [node name="ElectricBasic" type="Node2D"]
+rotation = 1.57079
 script = ExtResource("1_ehaqr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_fd641")
+position = Vector2(0, -128)
+texture = ExtResource("2_4exkk")
+
+[node name="DamageArea" type="Area2D" parent="Sprite2D" groups=["ElectricBasic"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/DamageArea"]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_mbi7f")
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -42,4 +86,5 @@ libraries = {
 [node name="Timer" type="Timer" parent="."]
 metadata/Disabled = true
 
-[connection signal="timeout" from="Timer" to="." method="OnTimerTimeout"]
+[connection signal="body_entered" from="Sprite2D/DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationPlayerAnimationFinished"]

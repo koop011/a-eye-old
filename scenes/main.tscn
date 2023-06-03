@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bejkn8o1j8nv7" path="res://scenes/joystick_ui.tscn" id="3_bhdpm"]
 [ext_resource type="Script" path="res://scripts/EnemyManager/Enemy_Manager.cs" id="4_80geu"]
 [ext_resource type="PackedScene" uid="uid://bhyscligrdhb1" path="res://scenes/background.tscn" id="5_elysr"]
-[ext_resource type="PackedScene" path="res://scenes/a_bot.tscn" id="6_qafjq"]
+[ext_resource type="PackedScene" uid="uid://vavpiavjj3lk" path="res://scenes/a_bot.tscn" id="6_qafjq"]
 [ext_resource type="PackedScene" uid="uid://5rfadvmy7fxw" path="res://scenes/weapon_controller.tscn" id="7_3o3p4"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_46v5g"]

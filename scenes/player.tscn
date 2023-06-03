@@ -53,3 +53,6 @@ shape = SubResource("CircleShape2D_jvy4n")
 [node name="Attack-Range" type="CollisionShape2D" parent="."]
 scale = Vector2(0.4, 0.4)
 shape = SubResource("CircleShape2D_17wty")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -6,7 +6,7 @@ public partial class a_bot : RigidBody2D
 	private NavigationAgent2D nav_agent;
 	private Timer target_find_timer;
 	private int speed = 300;
-	private int hp = 100;
+	private int _healthPoints = 100;
 	private Vector2 velocity;
 	private Vector2 next_location;
 	private Vector2 direction;
@@ -68,5 +68,20 @@ public partial class a_bot : RigidBody2D
 	private void _on_target_finder_timeout()
 	{
 		nav_agent.TargetPosition = player.GlobalPosition;
+	}
+
+	private void TakeDamage(int Damage)
+	{
+		_healthPoints = Math.Max(_healthPoints - Damage, 0);
+
+		if (_healthPoints <= 0)
+		{
+			Death();
+		}
+	}
+
+	private void Death()
+	{
+		QueueFree();
 	}
 }

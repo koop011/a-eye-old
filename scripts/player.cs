@@ -12,6 +12,10 @@ public partial class player : Area2D
 	private AnimatedSprite2D animated_sprite_2D;
 	private Vector2 velocity = Vector2.Zero;
 	private Weapon_Controller weaponController;
+	public bool CanMove = true;
+	private List<Node2D> _enemies;
+	private Node2D _cloestEnemy;
+	public bool IsEnemyInRange = false;
 
 	public override void _Ready()
 	{
@@ -21,7 +25,7 @@ public partial class player : Area2D
 		start_position = GetNode<Marker2D>("../Start-Position").Position;
 		animated_sprite_2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		weaponController = GetNode<Weapon_Controller>("../Weapon-Controller");
-
+		_enemies = new List<Node2D>();
 
 		joystick.Connect("UseMoveVector", new Callable(this, nameof(OnJoystickUseMoveVector)));
 	}
@@ -33,8 +37,15 @@ public partial class player : Area2D
 			animated_sprite_2D.Animation = "idle";
 			velocity = Vector2.Zero;
 		}
+		if (CanMove)
+		{
+			Position += velocity * (float)delta;
+		}
 
-		Position += velocity * (float)delta;
+		if(IsEnemyInRange)
+		{
+			FindCloestEnemy();
+		}
 		// Move limited to screen size.
 		// Position = new Vector2(
 		// 	x: Mathf.Clamp(Position.X, screen_border_adjuster, screen_size.X - screen_border_adjuster),
@@ -67,6 +78,40 @@ public partial class player : Area2D
 		}
 
 		animated_sprite_2D.FlipH = move_vector.X < 0;
+	}
+
+	private void _on_body_entered(Node2D body)
+	{
+		if (body.IsInGroup("Enemies"))
+		{
+			IsEnemyInRange = true;
+			_enemies.Add(body);
+		}
+
+		if(_enemies.Count == 0)
+		{
+			IsEnemyInRange = false;
+		}
+	}
+	
+	private void _on_body_exited(Node2D body)
+	{
+		_enemies.Remove(body);
+	}
+
+	
+	public Node2D FindCloestEnemy()
+	{
+		foreach(Node2D _enemy in _enemies)
+		{
+			_cloestEnemy = _enemy;
+			if(_enemy.GlobalPosition.DistanceTo(GlobalPosition) < _cloestEnemy.GlobalPosition.DistanceTo(GlobalPosition))
+			{
+				_cloestEnemy = _enemy;
+			}
+		}
+		
+		return _cloestEnemy;
 	}
 
 	// private void attack(){

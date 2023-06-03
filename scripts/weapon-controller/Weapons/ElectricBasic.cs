@@ -1,10 +1,11 @@
 using Godot;
 using System;
+using static Constants;
 
 public partial class ElectricBasic : Node2D
 {
 	private int coolDown = 2;
-	private int damage = 30;
+	private int _damage = 30;
 	private Timer timer;
 	private AnimationPlayer animationPlayer;
 	private player player;
@@ -16,7 +17,12 @@ public partial class ElectricBasic : Node2D
 		timer.WaitTime = coolDown;
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		player = GetNode<player>("../../Player");
-		timer.SetMeta("Disabled", IsDisabled);
+		Position = player.GlobalPosition;
+		player.CanMove = false;
+		animationPlayer.Play("attack");
+		LookAt(player.FindCloestEnemy().GlobalPosition);
+		// rotate node 90 degrees in radians to fix the animation.
+		Rotate((float)1.5708);
 	}
 
 	public override void _Process(double delta)
@@ -24,16 +30,17 @@ public partial class ElectricBasic : Node2D
 		// TODO: figure out how to position/rotate from player to cloest enemy.
 	}
 
-	private void OnTimerTimeout()
+	private void _on_damage_area_body_entered(Node2D body)
 	{
-		GD.Print("Basic Attack Timeout");
-		Position = player.Position;
-		animationPlayer.Play();
-		QueueFree();
-
-
-		// attack enemy
-		// TODO: get cloest enemy position to attack from player attack range collision.
+		if(body.IsInGroup("Enemies")){
+			body.Call("TakeDamage", _damage);
+		}
 	}
 
+	
+	private void OnAnimationPlayerAnimationFinished(StringName anim_name)
+	{
+		player.CanMove = true;
+		QueueFree();
+	}
 }
