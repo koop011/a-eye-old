@@ -1,12 +1,13 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Enemy_Manager : Node
 {
     [Export]
     public PackedScene a_bot_scene { get; set; }
-	
-    private System.Collections.Generic.List<Marker2D> spawns = new System.Collections.Generic.List<Marker2D>();
+
+    private List<Marker2D> spawns = new List<Marker2D>();
     private int spawner_count = 4;
     private int spawn_count = 5;
     private Node2D player;

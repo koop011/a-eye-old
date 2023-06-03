@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bexigum7of1s5"]
+[gd_scene load_steps=7 format=3 uid="uid://vavpiavjj3lk"]
 
 [ext_resource type="Texture2D" uid="uid://enoisntc0f7v" path="res://sprites/A-BOT/A-BOT-idle.png" id="1_3mwdo"]
-[ext_resource type="Script" path="res://scripts/a_bot.cs" id="1_dr0bu"]
+[ext_resource type="Script" path="res://scripts/EnemyManager/Enemy/a_bot.cs" id="1_dr0bu"]
 [ext_resource type="Texture2D" uid="uid://daccigte8121" path="res://sprites/A-BOT/A-EYE-down.png" id="2_f7s2l"]
 [ext_resource type="Texture2D" uid="uid://bq1e88585dl4j" path="res://sprites/A-BOT/A-BOT-up.png" id="4_aufwi"]
 
@@ -33,14 +33,14 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vgbbq"]
-radius = 51.0
+radius = 32.0
 
-[node name="A-BOT" type="RigidBody2D" groups=["A-BOTs"]]
+[node name="A-BOT" type="RigidBody2D" groups=["A-BOTs", "Enemies"]]
 gravity_scale = 0.0
 script = ExtResource("1_dr0bu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_ln2ra")
 animation = &"up"
 
@@ -50,7 +50,6 @@ shape = SubResource("CircleShape2D_vgbbq")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 80.0
 target_desired_distance = 80.0
-avoidance_enabled = true
 debug_enabled = true
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]

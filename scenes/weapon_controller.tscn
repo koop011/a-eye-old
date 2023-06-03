@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://5rfadvmy7fxw"]
+
+[ext_resource type="Script" path="res://scripts/weapon-controller/Weapon_Controller.cs" id="1_2afwu"]
+[ext_resource type="PackedScene" uid="uid://c53lfhluvdige" path="res://scenes/WeaponController/Weapons/ElectricBasic.tscn" id="2_vdbgh"]
+[ext_resource type="Texture2D" uid="uid://ctpo1fb7s4w26" path="res://icon.svg" id="3_mr5hk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uo2gr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_mr5hk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Weapon-Controller" type="Node2D"]
+script = ExtResource("1_2afwu")
+ElectricBasicScene = ExtResource("2_vdbgh")
+
+[node name="Weapon-Console" type="AnimatedSprite2D" parent="."]
+position = Vector2(360, 88)
+sprite_frames = SubResource("SpriteFrames_uo2gr")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="OnTimerTimeout"]
