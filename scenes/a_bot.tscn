@@ -50,6 +50,8 @@ shape = SubResource("CircleShape2D_vgbbq")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 80.0
 target_desired_distance = 80.0
+neighbor_distance = 1000.0
+max_neighbors = 3
 debug_enabled = true
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]
