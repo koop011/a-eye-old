@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://btuei0wbbes5b"]
+
+[ext_resource type="Script" path="res://scripts/game-manager/start_screen.cs" id="1_mqf86"]
+[ext_resource type="Texture2D" uid="uid://ctpo1fb7s4w26" path="res://icon.svg" id="1_qpsf1"]
+
+[node name="StartScreen" type="Node"]
+script = ExtResource("1_mqf86")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(360, 200)
+texture = ExtResource("1_qpsf1")
+
+[node name="StartGame" type="Button" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Click anywhere to start"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(360, 544)
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]

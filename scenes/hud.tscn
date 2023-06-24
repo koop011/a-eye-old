@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr4p40e7g188s"]
+
+[ext_resource type="Script" path="res://scripts/HUD.cs" id="1_3k2pk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7i5a5"]
+font_size = 50
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_3k2pk")
+
+[node name="Score" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 26.0
+grow_horizontal = 2
+text = "0"
+label_settings = SubResource("LabelSettings_7i5a5")
+
+[node name="Health" type="ColorRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -336.0
+offset_top = 72.0
+offset_right = 336.0
+offset_bottom = 120.0
+grow_horizontal = 2
+size_flags_horizontal = 0

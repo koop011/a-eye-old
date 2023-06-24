@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public partial class player : Area2D
 {
-	public int speed = 250;
+	private int _speed = 250;
+	private int _healthPoints = 1000;
 	private Vector2 screen_size;
 	private Joystick joystick;
 	private int screen_border_adjuster = 50;
@@ -13,9 +14,13 @@ public partial class player : Area2D
 	private Vector2 velocity = Vector2.Zero;
 	private Weapon_Controller weaponController;
 	public bool CanMove = true;
-	private List<Node2D> _enemies;
+	private List<Node2D> _enemiesInRange;
+	private List<Node2D> _enemiesOnCharacter;
 	private Node2D _cloestEnemy;
 	public bool IsEnemyInRange = false;
+	private bool IsEnemyOnCharacter = false;
+	private int _enemyDamage = 0;
+	private Timer _enemyDamageTimer;
 
 	public override void _Ready()
 	{
@@ -25,7 +30,11 @@ public partial class player : Area2D
 		start_position = GetNode<Marker2D>("../Start-Position").Position;
 		animated_sprite_2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		weaponController = GetNode<Weapon_Controller>("../Weapon-Controller");
-		_enemies = new List<Node2D>();
+		_enemiesInRange = new List<Node2D>();
+		_enemiesOnCharacter = new List<Node2D>();
+		_enemyDamageTimer = GetNode<Timer>("EnemyDamageTimer");
+		_enemyDamageTimer.WaitTime = 0.5;
+		_enemyDamageTimer.Start();
 
 		joystick.Connect("UseMoveVector", new Callable(this, nameof(_on_joystick_use_move_vector)));
 	}
@@ -57,12 +66,11 @@ public partial class player : Area2D
 	{
 		Position = position;
 		Show();
-		GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
 	}
 
 	private void _on_joystick_use_move_vector(Vector2 move_vector)
 	{
-		velocity = move_vector * (float)speed;
+		velocity = move_vector * (float)_speed;
 
 		if (move_vector.X > 0.9 || move_vector.X < -0.9)
 		{
@@ -85,19 +93,19 @@ public partial class player : Area2D
 		if (body.IsInGroup("Enemies"))
 		{
 			IsEnemyInRange = true;
-			_enemies.Add(body);
+			_enemiesInRange.Add(body);
 		}
 	}
 
 	private void _on_body_exited(Node2D body)
 	{
-		_enemies.Remove(body);
+		_enemiesInRange.Remove(body);
 	}
 
 
 	public Node2D FindCloestEnemy()
 	{
-		foreach (Node2D _enemy in _enemies)
+		foreach (Node2D _enemy in _enemiesInRange)
 		{
 			_cloestEnemy = _enemy;
 			if (_enemy.GlobalPosition.DistanceTo(GlobalPosition) < _cloestEnemy.GlobalPosition.DistanceTo(GlobalPosition))
@@ -106,12 +114,55 @@ public partial class player : Area2D
 			}
 		}
 		
-		if (_enemies.Count <= 0)
+		if (_enemiesInRange.Count <= 0)
 		{
 			IsEnemyInRange = false;
 		}
 
 		return _cloestEnemy;
+	}
+	
+	private void _on_body_area_body_entered(Node2D body)
+	{
+		if (body.IsInGroup("Enemies"))
+		{
+			IsEnemyOnCharacter = true;
+			_enemiesOnCharacter.Add(body);
+			_enemyDamage += (int)body.Call("GetDamagePoints");
+		}
+	}
+
+	private void _on_body_area_body_exited(Node2D body)
+	{
+		_enemiesOnCharacter.Remove(body);
+	}
+
+	private void _on_enemy_damage_timer_timeout()
+	{
+		if (IsEnemyOnCharacter)
+		{
+			TakeDamage(_enemyDamage);
+		}
+	}
+
+	private void TakeDamage(int Damage)
+	{
+		_healthPoints = Math.Max(_healthPoints - Damage, 0);
+		if (_healthPoints <= 0)
+		{
+			Death();
+		}
+
+		if (_enemiesOnCharacter.Count <= 0)
+		{
+			IsEnemyOnCharacter = false;
+		}
+	}
+
+	private void Death()
+	{
+		QueueFree();
+		// Insert game ending mechanic.
 	}
 
 	// private void attack(){
@@ -122,3 +173,6 @@ public partial class player : Area2D
 	// 	}
 	// }
 }
+
+
+

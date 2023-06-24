@@ -32,11 +32,11 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jvy4n"]
-radius = 50.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_17wty"]
 radius = 1000.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jvy4n"]
+radius = 50.0
 
 [node name="Player" type="Area2D"]
 scale = Vector2(0.5, 0.5)
@@ -47,12 +47,19 @@ scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_th65g")
 animation = &"idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_jvy4n")
-
 [node name="Attack-Range" type="CollisionShape2D" parent="."]
 scale = Vector2(0.4, 0.4)
 shape = SubResource("CircleShape2D_17wty")
 
+[node name="BodyArea" type="Area2D" parent="."]
+
+[node name="BodyShape" type="CollisionShape2D" parent="BodyArea"]
+shape = SubResource("CircleShape2D_jvy4n")
+
+[node name="EnemyDamageTimer" type="Timer" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="body_entered" from="BodyArea" to="." method="_on_body_area_body_entered"]
+[connection signal="body_exited" from="BodyArea" to="." method="_on_body_area_body_exited"]
+[connection signal="timeout" from="EnemyDamageTimer" to="." method="_on_enemy_damage_timer_timeout"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bsj6dxnd33s4d"]
+[gd_scene load_steps=10 format=3 uid="uid://bsj6dxnd33s4d"]
 
 [ext_resource type="Script" path="res://scripts/main.cs" id="1_gjdsp"]
 [ext_resource type="PackedScene" uid="uid://cfuiye5lg4c4y" path="res://scenes/player.tscn" id="2_eqpqo"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bhyscligrdhb1" path="res://scenes/background.tscn" id="5_elysr"]
 [ext_resource type="PackedScene" uid="uid://vavpiavjj3lk" path="res://scenes/a_bot.tscn" id="6_qafjq"]
 [ext_resource type="PackedScene" uid="uid://5rfadvmy7fxw" path="res://scenes/weapon_controller.tscn" id="7_3o3p4"]
+[ext_resource type="PackedScene" uid="uid://cr4p40e7g188s" path="res://scenes/hud.tscn" id="8_3lhaw"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_46v5g"]
 vertices = PackedVector2Array(-2072, -2064, 2008, -2064, 2080, 2336, -2080, 2344)
@@ -63,5 +64,7 @@ position = Vector2(384, 176)
 navigation_polygon = SubResource("NavigationPolygon_46v5g")
 
 [node name="Weapon-Controller" parent="." instance=ExtResource("7_3o3p4")]
+
+[node name="HUD" parent="." instance=ExtResource("8_3lhaw")]
 
 [connection signal="timeout" from="Start-Timer" to="Enemy-Manager" method="_on_start_timer_timeout"]

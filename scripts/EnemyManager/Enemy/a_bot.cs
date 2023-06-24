@@ -5,8 +5,9 @@ public partial class a_bot : RigidBody2D
 {
 	private NavigationAgent2D nav_agent;
 	private Timer target_find_timer;
-	private int speed = 300;
+	private int _speed = 300;
 	private int _healthPoints = 100;
+	private int _damage = 1;
 	private Vector2 velocity;
 	private Vector2 next_location;
 	private Vector2 direction;
@@ -36,7 +37,7 @@ public partial class a_bot : RigidBody2D
 		{
 			next_location = nav_agent.GetNextPathPosition();
 			direction = Position.DirectionTo(next_location).Normalized();
-			velocity = direction * speed;
+			velocity = direction * _speed;
 			nav_agent.SetVelocity(velocity);
 		}
 		else
@@ -78,6 +79,10 @@ public partial class a_bot : RigidBody2D
 		{
 			Death();
 		}
+	}
+
+	private int GetDamagePoints(){
+		return _damage;
 	}
 
 	private void Death()
